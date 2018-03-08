@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 
-struct matrix_2_2 {
-    double val[2][2];
-};
-
-struct vector_2 {
-    double val[2];
-};
+#include "types.h"
+#include "lexer.h"
+#include "parser.h"
 
 void printMatrix_2_2 (struct matrix_2_2 m) {
     printf("\t[ %lf %lf ]\n\t[ %lf %lf ]\n", m.val[0][0], m.val[1][0], m.val[0][1], m.val[1][1]);
@@ -110,5 +106,22 @@ int main (int argc, char *argv[]) {
     addVector_2_Vector_2(&v, v, t);
     printf("v + (m . v) = \n");
     printVector_2(v);
+
+    if (argc > 1) {
+        token_list *list = parse_tokens(argv[1]);
+        // debug_tokens(list);
+
+        Matrix2x2 * m = parseMatrix2x2(list);
+        if (m != NULL) {
+            printf("User Input: \n");
+            printMatrix_2_2(*m);
+
+            printf("Det(m) = %lf\n", detMatrix_2_2(*m));
+
+            invMatrix_2_2(&n, *m);
+            printf("m^-1 = \n");
+            printMatrix_2_2(n);
+        }
+    }
 }
 
