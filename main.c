@@ -112,6 +112,8 @@ int main (int argc, char *argv[]) {
 		printVector_2(v);
 	}
 	
+	struct matrix_2_2 *curr = NULL;
+	
     for (int i = 1; i < argc; i++) {
     	if (argv[i][0] == '-') {
     		if (argv[i][1] == 'v') fVerbose = 1;
@@ -125,25 +127,34 @@ int main (int argc, char *argv[]) {
 
 		    Matrix2x2 * m = parseMatrix2x2(list);
 		    if (m != NULL) {
-		        printf("User Input: \n");
+		        printf("Matrix (2x2): \n");
 		        printMatrix_2_2(*m);
-
-		        printf("Det(m) = %lf\n", detMatrix_2_2(*m));
-
-				struct matrix_2_2 n;
-		        invMatrix_2_2(&n, *m);
-		        printf("m^-1 = \n");
-		        printMatrix_2_2(n);
+		        
+		        if (curr == NULL) {
+		        	curr = m;
+	        	} else {
+	        		dotMatrix_2_2_Matrix_2_2 (curr, *curr, *m);
+					printf("Cuml. Transform:\n");
+					printMatrix_2_2(*curr);
+        		}
 		        
 		        continue;
 		    }
 		    
 		    Vector2 * v = parseVector2(list);
 		    if (v != NULL) {
-		        printf("User Input: \n");
+		        printf("Vector (2): \n");
 		        printVector_2(*v);
+		        
+				if (curr != NULL) {
+					struct vector_2 v2;
+					dotMatrix_2_2_Vector_2(&v2, *curr, *v);
+					printf("Transform:\n");
+					printVector_2(v2);
+				}	
 		    }
 	    }
     }
+    
 }
 
