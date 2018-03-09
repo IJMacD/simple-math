@@ -1,9 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "types.h"
 #include "lexer.h"
 #include "parser.h"
+
+int fVerbose = 0;
 
 void printMatrix_2_2 (struct matrix_2_2 m) {
     printf("\t[ %lf %lf ]\n\t[ %lf %lf ]\n", m.val[0][0], m.val[1][0], m.val[0][1], m.val[1][1]);
@@ -63,65 +66,84 @@ void addVector_2_Vector_2 (struct vector_2 *out, struct vector_2 a, struct vecto
 }
 
 int main (int argc, char *argv[]) {
-    struct matrix_2_2 m = { .val = {{1.414214, 0}, {-1.414214, 1.414214}} };
-    struct vector_2 v = { .val = {1, 1} };
-    struct vector_2 t;
-    struct vector_2 w;
-    struct matrix_2_2 n;
-    struct matrix_2_2 i;
-    struct matrix_2_2 r;
+	if (argc == 1) {
+		struct matrix_2_2 m = { .val = {{1.414214, 0}, {-1.414214, 1.414214}} };
+		struct vector_2 v = { .val = {1, 1} };
+		struct vector_2 t;
+		struct vector_2 w;
+		struct matrix_2_2 n;
+		struct matrix_2_2 i;
+		struct matrix_2_2 r;
 
-    printf("m = \n");
-    printMatrix_2_2(m);
+		printf("m = \n");
+		printMatrix_2_2(m);
 
-    printf("v = \n");
-    printVector_2(v);
+		printf("v = \n");
+		printVector_2(v);
 
-    dotMatrix_2_2_Vector_2(&t, m, v);
-    printf("m . v = \n");
-    printVector_2(t);
+		dotMatrix_2_2_Vector_2(&t, m, v);
+		printf("m . v = \n");
+		printVector_2(t);
 
-    printf("Det(m) = %lf\n", detMatrix_2_2(m));
+		printf("Det(m) = %lf\n", detMatrix_2_2(m));
 
-    invMatrix_2_2(&n, m);
-    printf("m^-1 = \n");
-    printMatrix_2_2(n);
+		invMatrix_2_2(&n, m);
+		printf("m^-1 = \n");
+		printMatrix_2_2(n);
 
-    dotMatrix_2_2_Vector_2(&v, n, t);
-    printf("m^-1 . (m . v) = \n");
-    printVector_2(v);
+		dotMatrix_2_2_Vector_2(&v, n, t);
+		printf("m^-1 . (m . v) = \n");
+		printVector_2(v);
 
-    dotMatrix_2_2_Matrix_2_2(&i, n, m);
-    printf("(m^-1 . m) = \n");
-    printMatrix_2_2(i);
+		dotMatrix_2_2_Matrix_2_2(&i, n, m);
+		printf("(m^-1 . m) = \n");
+		printMatrix_2_2(i);
 
-    rotMatrix_2_2(&r, M_PI / 4.0);
-    printf("r = \n");
-    printMatrix_2_2(r);
+		rotMatrix_2_2(&r, M_PI / 4.0);
+		printf("r = \n");
+		printMatrix_2_2(r);
 
-    dotMatrix_2_2_Vector_2(&w, r, v);
-    printf("rot(pi/4) . v = \n");
-    printVector_2(w);
+		dotMatrix_2_2_Vector_2(&w, r, v);
+		printf("rot(pi/4) . v = \n");
+		printVector_2(w);
 
-    addVector_2_Vector_2(&v, v, t);
-    printf("v + (m . v) = \n");
-    printVector_2(v);
+		addVector_2_Vector_2(&v, v, t);
+		printf("v + (m . v) = \n");
+		printVector_2(v);
+	}
+	
+    for (int i = 1; i < argc; i++) {
+    	if (argv[i][0] == '-') {
+    		if (argv[i][1] == 'v') fVerbose = 1;
+    	}
+    	else {
+		
+		    token_list *list = parse_tokens(argv[i]);
+		    if (fVerbose) {
+			    debug_tokens(list);
+		    }
 
-    if (argc > 1) {
-        token_list *list = parse_tokens(argv[1]);
-        // debug_tokens(list);
+		    Matrix2x2 * m = parseMatrix2x2(list);
+		    if (m != NULL) {
+		        printf("User Input: \n");
+		        printMatrix_2_2(*m);
 
-        Matrix2x2 * m = parseMatrix2x2(list);
-        if (m != NULL) {
-            printf("User Input: \n");
-            printMatrix_2_2(*m);
+		        printf("Det(m) = %lf\n", detMatrix_2_2(*m));
 
-            printf("Det(m) = %lf\n", detMatrix_2_2(*m));
-
-            invMatrix_2_2(&n, *m);
-            printf("m^-1 = \n");
-            printMatrix_2_2(n);
-        }
+				struct matrix_2_2 n;
+		        invMatrix_2_2(&n, *m);
+		        printf("m^-1 = \n");
+		        printMatrix_2_2(n);
+		        
+		        continue;
+		    }
+		    
+		    Vector2 * v = parseVector2(list);
+		    if (v != NULL) {
+		        printf("User Input: \n");
+		        printVector_2(*v);
+		    }
+	    }
     }
 }
 

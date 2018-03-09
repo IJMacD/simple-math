@@ -9,4 +9,6 @@ typedef struct vector_2 {
   double val[2];
 } Vector2;
 
+extern int fVerbose;
+
 #endif

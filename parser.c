@@ -6,7 +6,7 @@
 
 Matrix2x2 * parseMatrix2x2 (token_list *list) {
   if (list->count < 8) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Not enough tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Not enough tokens\n");
     return NULL;
   }
 
@@ -14,13 +14,13 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
   double a, b, c, d;
 
   if (list->items[i].type != TOKEN_BRACKET_OPEN) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) First token not a bracket\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) First token not a bracket\n");
     return NULL;
   }
   i++;
 
   if (list->items[i].type != TOKEN_BRACKET_OPEN) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Second token not a bracket\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Second token not a bracket\n");
     return NULL;
   }
   i++;
@@ -38,7 +38,7 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
     a = 0; // First token was comma
     i++;
   } else {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Expected number or a comma\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Expected number or a comma\n");
     return NULL;
   }
 
@@ -50,12 +50,12 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
   } else if (list->items[i].type == TOKEN_BRACKET_CLOSE) {
     b = 0; // If we're already at the bracket set b=0
   } else {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Expected a number\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Expected a number\n");
     return NULL;
   }
 
   if (list->items[i].type != TOKEN_BRACKET_CLOSE) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
     return NULL;
   }
   i++;
@@ -65,7 +65,7 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
   }
 
   if (list->items[i].type != TOKEN_BRACKET_OPEN) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Expected a bracket\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Expected a bracket\n");
     return NULL;
   }
   i++;
@@ -83,7 +83,7 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
     c = 0; // First token was comma
     i++;
   } else {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Expected number or a comma\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Expected number or a comma\n");
     return NULL;
   }
 
@@ -95,18 +95,18 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
   } else if (list->items[i].type == TOKEN_BRACKET_CLOSE) {
     d = 0; // If we're already at the bracket set d=0
   } else {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Expected a number\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Expected a number\n");
     return NULL;
   }
 
   if (list->items[i].type != TOKEN_BRACKET_CLOSE) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
     return NULL;
   }
   i++;
 
   if (list->items[i].type != TOKEN_BRACKET_CLOSE) {
-    fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Matrix2x2) Too many tokens\n");
     return NULL;
   }
 
@@ -122,7 +122,7 @@ Matrix2x2 * parseMatrix2x2 (token_list *list) {
 
 Vector2 * parseVector2 (token_list *list) {
   if (list->count < 3) {
-    fprintf(stderr, "Parser Error: (Vector2) Not enough tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Vector2) Not enough tokens\n");
     return NULL;
   }
 
@@ -130,7 +130,7 @@ Vector2 * parseVector2 (token_list *list) {
   double x, y;
 
   if (list->items[i].type != TOKEN_BRACKET_OPEN) {
-    fprintf(stderr, "Parser Error: (Vector2) First token not a bracket\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (Vector2) First token not a bracket\n");
     return NULL;
   }
 
@@ -149,7 +149,7 @@ Vector2 * parseVector2 (token_list *list) {
     x = 0; // First token was comma
     i++;
   } else {
-    fprintf(stderr, "Parser Error: (vector2) Second token not a number or a comma\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (vector2) Second token not a number or a comma\n");
     return NULL;
   }
 
@@ -161,12 +161,12 @@ Vector2 * parseVector2 (token_list *list) {
   } else if (list->items[i].type == TOKEN_BRACKET_CLOSE) {
     y = 0; // If we're already at the bracket set y=0
   } else {
-    fprintf(stderr, "Parser Error: (vector2) Second token not a number\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (vector2) Second token not a number\n");
     return NULL;
   }
 
   if (list->items[i].type != TOKEN_BRACKET_CLOSE) {
-    fprintf(stderr, "Parser Error: (vector2) Too many tokens\n");
+    if (fVerbose) fprintf(stderr, "Parser Error: (vector2) Too many tokens\n");
     return NULL;
   }
 
